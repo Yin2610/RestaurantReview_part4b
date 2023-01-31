@@ -1,0 +1,75 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Head from '../components/head.astro';
+import Scripts from '../components/scripts.astro';
+---
+
+<html lang="en">
+	<Head title="Restaurants"></Head>
+	<body style="background-color: #F8F8F8;">
+		<!-- Include top navigation here -->
+		<Navbar></Navbar>
+		<div class="container-fluid">
+            <div class="row" id="parent">
+                Retrieving restaurants from database... Please wait...<br><br>
+                If you are seeing this message for a long time, it is likely
+                that you have a JavaScript error. Troubleshoot your script by
+                using the browser console panel now. Please use either Firefox
+                or Chrome to render this webpage.
+            </div>
+            <div class="row">
+				<div class="col-md-1"></div>
+            	<div class="col-md-2">
+					<div class="card p-4">
+						<h5>Location</h5>
+						<span class="mb-1"><input type="checkbox" name="Region" value="North"> North</span>
+						<span class="mb-1"><input type="checkbox" name="Region" value="East"> East</span>
+						<span class="mb-1"><input type="checkbox" name="Region" value="South"> South</span>
+						<span class="mb-1"><input type="checkbox" name="Region" value="West"> West</span>
+						<span class="mb-1"><input type="checkbox" name="Region" value="Central"> Central</span>
+						<hr>
+						<h5>Category</h5>
+						<span class="mb-1"><input type="checkbox" name="Category" value="Chinese cuisine"> Chinese cuisine</span>
+						<span class="mb-1"><input type="checkbox" name="Category" value="Western cuisine"> Western cuisine</span>
+						<span class="mb-1"><input type="checkbox" name="Category" value="Indian cuisine"> Indian cuisine</span>
+						<span class="mb-1"><input type="checkbox" name="Category" value="Halal"> Halal</span>
+						<span class="mb-1"><input type="checkbox" name="Category" value="Fast food"> Fast food</span>
+						<input type="button" class="bg-warning border-white text-white px-2 mt-3" value="Filter" style="cursor: pointer;" onclick="filterRestaurants()">
+						<input type="button" class="border border-secondary text-dark px-1 mt-3" value="Cancel" style="cursor: pointer;" onclick="cancelFilter()">
+					</div>
+            	</div>
+            	<div class="col-md-8">
+					<div class="card">
+						<div class="px-4 py-2">
+							<a href="../index.html">Home</a> &gt; <a href="../explore.html">Explore</a> &gt; Restaurants
+							<div class="row">
+								<div class="mt-4 mr-auto ml-3">
+									<h5 style="text-decoration: underline;">Restaurants</h5>
+								</div>
+								<div class="mt-2 ml-auto mr-3">
+									<div class="input-group">
+										<input class="form-control" placeholder="Search restaurants... ">
+										<button type="submit" class="border border-secondary bg-white"><i class="fa fa-search"></i></button>
+									</div>
+								</div>
+							</div>
+							<div id="restaurantsTable" class="row mt-3"></div>
+						</div>
+					</div>
+            	</div>
+            	<div class="col-md-1"></div>
+        	</div>
+		</div>
+		<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>  
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+	</body>
+	<Scripts></Scripts>
+    <script src="/js/app.js" is:inline></script>
+    <script src="/js/restaurants.js" is:inline></script>
+    <script src="/js/reviews.js" is:inline></script>
+	<script is:inline>
+		window.addEventListener("load", getRestaurantData);
+		loginStatus();
+	    changeActiveNavItem("Explore");
+	</script>
+</html>

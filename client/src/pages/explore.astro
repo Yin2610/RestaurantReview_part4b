@@ -1,0 +1,50 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Scripts from '../components/scripts.astro';
+import Head from '../components/head.astro';
+---
+
+<html lang="en">
+<Head title="Explore"></Head>
+<body>
+    <Navbar></Navbar>
+    <div class="container-fluid explore-container">
+        <div class="row explore-menus">
+            <div class="col-md-1"></div>
+            <div class="card col-md-4" id="restaurantsCard">
+                <div class="card-body text-center mt-md-3">
+                    <img src="images/websiteImages/Icon material-restaurant-menu.png" alt="Restaurant dining icon" width="55px" height="42px">
+                    <br>
+                    <h5 class="card-title">Restaurants</h5>
+                    <p class="card-text">Write or read reviews for restaurants in Singapore.</p>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="card col-md-4">
+                <div class="card-body text-center mt-md-3">
+                    <img src="images/websiteImages/Icon material-group.png" alt="Group icon" width="55px" height="42px">
+                    <br>
+                    <h5 class="card-title">Groups</h5>
+                    <p class="card-text">Create or join groups to read or write articles on restaurants you like.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<Scripts></Scripts>
+<script src="/js/app.js" is:inline></script>
+<script src="/js/restaurants.js" is:inline></script>
+<script src="/js/reviews.js" is:inline></script>
+<script>
+    loginStatus();
+    document.getElementById("restaurantsCard").addEventListener("click", goToRestaurants);
+    function goToRestaurants() {
+        window.location.href = "restaurants.html";
+    }
+    window.addEventListener("load", changeActiveNavItem);
+    function changeActiveNavItem() {
+        document.getElementsByClassName("active")[0].classList.remove("active");
+        document.getElementById("Explore").classList.add("active");
+    }
+</script>
+</html>

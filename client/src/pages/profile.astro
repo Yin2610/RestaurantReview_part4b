@@ -1,0 +1,28 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Head from '../components/head.astro';
+import Scripts from '../components/scripts.astro';
+---
+
+<html lang="en">
+	<Head title="Home"></Head>
+	<body style="background-color: #F8F8F8;">
+		<!-- Include top navigation here -->
+		<Navbar></Navbar>
+		<div class="container-fluid">
+            <div class="card h-100">
+                <div class="row">
+                    <div class="mt-2 ml-5"><a href="../index.html">Home</a> &gt; Profile</div>
+                </div>
+                <div id="userInfo">
+                </div>
+            </div>
+		</div>
+	</body>
+	<script>
+        loginStatus();
+        changeActiveNavItem("Profile");
+        displayProfile();
+	</script>
+	<Scripts></Scripts>
+</html>

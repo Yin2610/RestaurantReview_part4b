@@ -1,0 +1,108 @@
+html, body, .nav-item .nav-link {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#addToFav {
+  color: white !important;
+}
+
+body, .nav-item .nav-link {
+  color: #707070;
+}
+
+button {
+  cursor: pointer;
+}
+
+.navbar {
+  border-bottom: 1px solid #FFC850;
+}
+
+.nav-item .nav-link:hover {
+  color: #FFC850 !important;
+}
+.nav-item.active .nav-link {
+  color: #FFC850 !important;
+}
+
+.navbar {
+  background-color: #FFFAEE;
+}
+.navbar .nav-link {
+  display: inline;
+}
+
+.container-fluid {
+  padding-top: 100px;
+  height: 100%;
+}
+
+.explore-container {
+  background-color: #F8F8F8;
+}
+.explore-container .explore-menus {
+  width: 80%;
+  height: 200px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.resetPw-container {
+  background-color: #F8F8F8;
+}
+
+.registration-container, .login-container {
+  background-image: url("/images/websiteImages/pexels-photo-262047.png");
+  margin: 0px;
+  background-position: center;
+  height: 100vh;
+  background-size: cover;
+}
+
+.resetPwBg {
+  background-image: url("/images/websiteImages/Mask Group 7.png");
+}
+
+.personalDetailsContainer {
+  margin: 0;
+}
+
+.card-body {
+  cursor: pointer;
+}
+
+.card-img-top {
+  height: 200px;
+}
+
+.restaurantImg {
+  width: 75%;
+  height: 400px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.badge {
+  background-color: #FFFAEE;
+}
+
+.modal-content {
+  background-image: url("/images/websiteImages/Mask Group 7.png");
+}
+
+.edit {
+  float: right;
+  padding-right: 10px;
+}
+
+.bg-image {
+  background-image: url("/images/websiteImages/Mask Group 1.png");
+  height: 100vh;
+  background-size: cover;
+}/*# sourceMappingURL=mystyle.css.map */

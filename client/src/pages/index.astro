@@ -1,0 +1,29 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Head from '../components/head.astro';
+import Scripts from '../components/scripts.astro';
+---
+
+<html lang="en">
+	<Head title="Home"></Head>
+	<body>
+		<!-- Include top navigation here -->
+		<Navbar></Navbar>
+		<div class="container-fluid bg-image">
+			<div class="row h-100">
+				<div class="text-white d-flex m-auto flex-column" style="align-items:flex-start">
+					<h1 style="-webkit-text-stroke: 0.6px; -webkit-text-stroke-color: black;">Looking for a good restaurant to dine in?</h1>
+					<input type="button" class="bg-warning border-white text-white py-2 px-3 mt-3 mx-auto" value="Start exploring" style="cursor: pointer;" onclick="window.location='explore.html'">
+				</div>
+			</div>
+			<p>
+			<h3 id="summary"></h3>
+			</p>
+		</div>
+	</body>
+	<Scripts></Scripts>
+	<script>
+		loginStatus();
+	</script>
+	<script src="/js/users.js" is:inline></script>
+</html>

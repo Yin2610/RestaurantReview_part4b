@@ -1,0 +1,45 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Head from '../components/head.astro';
+import Scripts from '../components/scripts.astro';
+import NewReviewsModal from '../components/new-reviews-modal.astro';
+import EditReviewsModal from '../components/edit-reviews-modal.astro';
+---
+
+<html lang="en">
+<head>
+    <Head title="Reviews"></Head>
+    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+</head>
+<body style="background-color: #F8F8F8;">
+    <Navbar></Navbar>
+    <div class="container-fluid reviews-container">
+        <div id="restaurantCard" class="card">
+            <button style="background-color: #F99EBF; width: 170px; z-index: 1; position:absolute; top: 40px; right: 30px; height: 35px;" class="border-0 text-white rounded" onclick="addToFavourites()">
+                <i id="addToFav" style="color: white;" class="fa-solid fa-heart"></i> Add to favourites 
+            </button>
+            <div id="restaurantDetails"></div>
+        </div>
+        <div id="emptyReview">No review has been posted about this restaurant yet. Create one now.</div>
+        <div id="reviewBody" class="card mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                <h5 id="review" style="font-weight: bold; position: absolute; top: 22px; left:40px">Reviews</h5>
+                <span style="float: right;" class="px-4 pt-3"><button type="button" class="btn btn-warning text-white" id="newReview" data-toggle="modal" data-target="#newReviewModal" data-dismiss="modal">Post a review</button>
+                </span>
+            </div>
+            </div>
+            <hr>
+            <div id="reviewContent"></div>
+        </div>
+    </div>
+    <NewReviewsModal></NewReviewsModal>
+    <EditReviewsModal></EditReviewsModal>
+</body>
+<Scripts></Scripts>
+<script is:inline>
+    window.addEventListener("load", fetchReviews);
+    loginStatus();
+    changeActiveNavItem("Explore");
+</script>
+</html>
