@@ -11,7 +11,10 @@ function getAllRestaurants(request, respond){
     if(request.query.category) {
         var categories = request.query.category;
     }
-    restaurantsDB.getAllRestaurants(regions, categories, function(error, result){
+    if(request.query.searchString) {
+        var searchString = request.query.searchString;
+    }
+    restaurantsDB.getAllRestaurants(regions, categories, searchString, function(error, result){
         if(error){
             respond.json(error);
         }

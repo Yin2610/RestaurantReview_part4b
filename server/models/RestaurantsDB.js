@@ -3,7 +3,7 @@
 var db = require('../db-connection');
 
 class RestaurantsDB{
-    getAllRestaurants(regions, categories, callback) {
+    getAllRestaurants(regions, categories, searchString, callback) {
         var sql = "SELECT rt.*, count(rv._id) as totalReviews, round(avg(rv.rating),0) as averageRating, round(avg(rv.price)) as averagePrice FROM restaurant as rt LEFT JOIN review as rv ON rt._id = rv.restaurantId ";
         if (regions && categories) {
             var regionsSplit = regions.split(",").join("' OR rt.region = '");
@@ -20,6 +20,9 @@ class RestaurantsDB{
                 var categoriesSplit = categories.split(",").join("%' OR rt.category LIKE '%");
                 sql += " WHERE rt.category LIKE '%" + categoriesSplit + "%'";
             }
+        }
+        if(searchString) {
+            sql += " WHERE rt.restaurantName LIKE '%" + searchString + "%' OR rt.town LIKE '%" + searchString + "%'";
         }
         sql += " GROUP BY rt._id";
         console.log(sql);

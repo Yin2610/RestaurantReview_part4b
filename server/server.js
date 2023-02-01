@@ -14,6 +14,11 @@ var articleLikeController = require('./controllers/articleLikeController'); // s
 var articleReplyController = require('./controllers/articleReplyController'); // set articleReplyController to the articleReplyController class
 
 var app = express(); // set variable app to be an instance of express framework. From now on, app is the express
+app.use(cors());
+app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use(express.json()); // json() is a method inbuilt in express to recognize the incoming Request Object from the web client as a JSON Object.
+// In time to come we will need to accept new or edited comments from user
+
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './uploads')
@@ -22,17 +27,8 @@ var storage = multer.diskStorage({
         cb(null, file.originalname)
     }
 });
-
-app.use(cors());
-app.use(express.static(__dirname + "/public"));
-console.log()
-app.use("/uploads", express.static(__dirname + "./uploads"));
-app.use(express.static("../client/src/pages")); //static files are to be served from the public folder - for eg. html, images, css
-app.use(express.json()); // json() is a method inbuilt in express to recognize the incoming Request Object from the web client as a JSON Object.
-// In time to come we will need to accept new or edited comments from user
-
-
 var upload = multer({ storage: storage });
+
 app.post('/register', upload.single('userPhoto'), function(req, res) {
     if(!req.file) {
         console.log("Cannot upload user picture.");

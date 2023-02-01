@@ -16,8 +16,7 @@ class UsersDB {
 
   login(userName, password, callback) {
     var sql =
-      "SELECT userName, userPhoto, userEmail, userContact, userGender, userBio \
-      FROM user WHERE userName = ? AND password = ?";
+      "SELECT * FROM user WHERE userName = ? AND password = ?";
     db.query(sql, [userName, password], callback);
   }
 

@@ -125,8 +125,7 @@ function filterRestaurants() {
       displayRestaurants();
     }
     else {
-      document.getElementById("restaurantsTable").innerHTML = "";
-      document.getElementById("restaurantsTable").innerText = "No restaurant found for this filter.";
+      document.getElementById("restaurantsTable").innerHTML = "<div class='ml-3'>No restaurant found for this search.</div>";
     }
   })
   .catch((error) => {
@@ -135,7 +134,33 @@ function filterRestaurants() {
 }
 
 function cancelFilter() {
-  restaurant_array = JSON.parse(localStorage.getItem("restaurant_array_string"));
+  restaurant_array = JSON.parse(localStorage.getItem("restaurant_array_string"));   //set back to all restaurants in restaurant_array
   document.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {checkbox.checked = false;});
   displayRestaurants();
+}
+
+async function searchRestaurant() {
+  var searchString = document.getElementById("searchString").value;
+  var clearSearch = document.getElementById("clearSearch");
+  if(searchString == "") {
+    clearSearch.style.display = "none";
+  }
+  else {
+    clearSearch.style.display = "block";
+  }
+  var searchURL = "http://localhost:8080/restaurants?searchString=" + searchString;
+  const response = await fetch(searchURL, {
+    method: "GET",
+  });
+  if(!response.ok) {
+    throw new Error(`Search error. status: ${response.status}`);
+  }
+  const data = await response.json();
+  if(data.length) {
+    restaurant_array = data;
+    displayRestaurants();
+  }
+  else {
+    document.getElementById("restaurantsTable").innerHTML = "<div class='ml-3'>No restaurant found for this search.</div>";
+  }
 }

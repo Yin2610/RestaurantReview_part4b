@@ -1,13 +1,11 @@
 var restaurant_url = "http://localhost:8080/restaurants";
-var restaurant_array = []; // This creates an empty movie array
+var restaurant_array = []; // This creates an empty restaurant array
+
 var restaurant_count = 0;
-/*  There are two categories: "Now Showing" and "Coming Soon". This variable states which 
-    category of movies should be listed when the home page is first loaded. */
-var category = "Now Showing";
 var currentRestaurantIndex = 0;
 var currentReviewIndex = 0;
 var review_url = "http://localhost:8080/reviews";
-var review_array = []; // This creates an empty comment array
+var review_array = []; // This creates an empty review array
 
 var whiteStarImage = 'images/websiteImages/white_star.png';
 var yellowStarImage = 'images/websiteImages/yellow_star.png';
@@ -20,6 +18,10 @@ var price = 0;
 var tempRating = 0;
 
 var login_url = "http://localhost:8080/login";
+
+if (sessionStorage.getItem("login_userId")) {
+    var login_userId = sessionStorage.getItem("login_userId");
+}
 
 function togglePasswordVisibility(element) {
     if(element.type == "password") {

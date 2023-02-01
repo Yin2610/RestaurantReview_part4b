@@ -15,7 +15,6 @@ function fetchReviews() {
 }
 
 function addToFavourites() {
-  alert('add');
   if(sessionStorage.getItem("user_login") == "false") {
     alert("Please login first to add to favourites.");
     return;
@@ -99,7 +98,7 @@ function showRestaurantDetails() {
     currentRestaurant.menuLink +
     '">See menu</a></div></div><div class="col-md-4"><img src="images/websiteImages/Icon material-location-on.png" width="15px" height="20px" class="mx-2">' +
     currentRestaurant.location +
-    '<br><div class="mt-3"><img src="images/websiteImages/Icon feather-clock.png" width="20px" height="20px" class="mx-2">' +
+    '<br><div class="mt-3"><img src="images/websiteImages/Icon feather-clock.png" width="20px" height="20px" class="mx-2">' + 
     currentRestaurant.openingHours +
     '</div></div></div><div class="m-4 text-center"><i>Highlights</i></div><div id="restaurantImgCarousel" class="carousel slide text-center mb-3" data-ride="carousel"><div class="carousel-inner"><div class="carousel-item active"><img class="restaurantImg" src="' +
     currentRestaurant.image1 +
@@ -114,8 +113,6 @@ function showRestaurantDetails() {
     .insertAdjacentHTML("beforeend", htmlRestaurantDetails);
 }
 
-//This function is to display all the comments of that movie
-//whenever the user click on the "comment" button
 function showReviews() {
   restaurant_array = JSON.parse(
     localStorage.getItem("restaurant_array_string")
@@ -136,8 +133,8 @@ function showReviews() {
       star = "";
       var htmlReviews =
         '<div class="container"> \
-            <div class="row d-flex justify-content-center align-items-center"> \
-            <div class="col-md-1"><img src="' +
+            <div class="row"> \
+            <div class="col-md-1"><img src="http://127.0.0.1:8080/uploads/' +
         review_array[i].userPhoto +
         '"/ width="50px" height="50px" style="object-fit: cover" class="rounded-circle"><br><div>' +
         review_array[i].userName +
@@ -181,15 +178,16 @@ function showReviews() {
         "</i></b></div> \
             <div>" +
         review_array[i].comment +
-        "</div>";
-      htmlReviews +=
-        '</div> \
-            <div class="col-md-1"><img src="images/websiteImages/Icon feather-edit.png" item="' +
+        "</div></div>";
+      if(login_userId == review_array[i].userId) {
+        htmlReviews +=
+        '<div class="col-md-1"><img src="images/websiteImages/Icon feather-edit.png" item="' +
         i +
         '" width="25px" height="25px" data-toggle="modal" data-target="#editReviewModal" data-dismiss="modal" onclick="editReview(this)"/> <img src="images/websiteImages/delete(1).png" item="' +
         i +
-        '" width="25px" height="25px" onclick="deleteReview(this)"/></div>\
-            </div></div><hr>';
+        '" width="25px" height="25px" onclick="deleteReview(this)"/></div>';
+      }
+       htmlReviews += '</div></div><hr>';
       document
         .getElementById("reviewContent")
         .insertAdjacentHTML("beforeend", htmlReviews);
@@ -212,7 +210,7 @@ function newReview() {
 function addReview() {
   var review = new Object();
   review.restaurantId = restaurant_array[currentRestaurantIndex]._id; // Movie ID is required by server to create new comment
-  review.userId = document.getElementById("userId").value; // Value from HTML input text
+  review.userId = login_userId; 
   review.title = document.getElementById("title").value; // Value from HTML input text
   review.comment = document.getElementById("comment").value; // Value from HTML input text
   review.datePosted = null; // Change the datePosted to null instead of taking the timestamp on the client side;
@@ -370,8 +368,7 @@ function updateReview() {
     var updateReview = new XMLHttpRequest(); // new HttpRequest instance to send request to server
     updateReview.open("PUT", edit_review_url, true); //The HTTP method called 'PUT' is used here as we are updating data
     updateReview.setRequestHeader("Content-Type", "application/json");
-    review_array[currentReviewIndex].userId =
-      document.getElementById("editUserId").value;
+    review_array[currentReviewIndex].userId = login_userId;
     review_array[currentReviewIndex].title =
       document.getElementById("editTitle").value;
     review_array[currentReviewIndex].comment =
@@ -390,7 +387,7 @@ function deleteReview(element) {
   var response = confirm("Are you sure you want to delete this comment?");
   if (response == true) {
     var item = element.getAttribute("item"); //get the current item
-    var delete_review_url = review_url + "/" + review_array[item]._id;
+    var delete_review_url = review_url + "/" + login_userId;
     var eraseReview = new XMLHttpRequest();
     eraseReview.open("DELETE", delete_review_url, true);
     eraseReview.onload = function () {

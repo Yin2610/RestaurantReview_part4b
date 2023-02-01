@@ -23,11 +23,22 @@ import EditReviewsModal from '../components/edit-reviews-modal.astro';
         <div id="emptyReview">No review has been posted about this restaurant yet. Create one now.</div>
         <div id="reviewBody" class="card mt-4">
             <div class="row">
-                <div class="col-md-12">
-                <h5 id="review" style="font-weight: bold; position: absolute; top: 22px; left:40px">Reviews</h5>
-                <span style="float: right;" class="px-4 pt-3"><button type="button" class="btn btn-warning text-white" id="newReview" data-toggle="modal" data-target="#newReviewModal" data-dismiss="modal">Post a review</button>
-                </span>
-            </div>
+                <div class="col-md-2">
+                    <h5 id="review" style="font-weight: bold; position: absolute; top: 22px; left:40px">Reviews</h5>
+                </div>
+                <div class="col-md-8 text-right mt-3">
+                    <label for="sort" style="display: inline;">Sort by: &nbsp; </label>
+                    <select name="sort" style="color: #707070; width: 140px; display: inline" class="form-control">
+                        <option value="Most recent">Most recent</option>
+                        <option value="Oldest">Oldest</option>
+                        <option value="Best rating">Best rating</option>
+                        <option value="Worst rating">Worst rating</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <span style="float: right;" class="px-4 pt-3"><button type="button" class="btn btn-warning text-white" id="newReview" data-toggle="modal" data-target="#newReviewModal" data-dismiss="modal">Post a review</button>
+                    </span>
+                </div>
             </div>
             <hr>
             <div id="reviewContent"></div>

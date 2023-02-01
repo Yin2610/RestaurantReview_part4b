@@ -1,6 +1,7 @@
 "use strict";
 const UsersDB = require('../models/UsersDB');
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 var usersDB = new UsersDB();
 
@@ -36,6 +37,14 @@ function login(request, respond) {
             respond.status(401).json(error);
         }
         else {
+            const hash = result[0].password;
+            var flag = bcrypt.compareSync(password, hash);
+            if(flag) {
+                respond.json({result: "valid"});
+            }
+            else {
+                respond.json({result: "invalid"});
+            }
             respond.json(result);
         }
         console.log(userName, password);
@@ -43,7 +52,9 @@ function login(request, respond) {
 }
 
 function addUser(request, respond){
-    var user = new User(null, request.body.userName, request.file.filename, request.body.userEmail, request.body.userContact, request.body.userGender, request.body.userBio, request.body.password);
+    var password = request.body.password;
+    password = bcrypt.hashSync(password, 10);
+    var user = new User(null, request.body.userName, request.file.filename, request.body.userEmail, request.body.userContact, request.body.userGender, request.body.userBio, password);
     usersDB.addUser(user, function(error, result){
         if(error){
             respond.json(error);

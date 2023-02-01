@@ -53,28 +53,30 @@ function loginUser() {
     },
     body: JSON.stringify(user),
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        alert("Username or password is not correct.");
-        throw "Login failed";
-      }
-    })
-    .then((data) => {
-      sessionStorage.setItem("user_login", "true");
-      sessionStorage.setItem("user_info_string", JSON.stringify(data));
-      window.location.href = "../index.html";
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      alert("Username or password is not correct.");
+      throw "Login failed";
+    }
+  })
+  .then((data) => {
+    sessionStorage.setItem("user_login", "true");
+    sessionStorage.setItem("user_info_string", JSON.stringify(data));
+    sessionStorage.setItem("login_userId", data[0]._id);
+    window.location.href = "../index.html";
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 }
 
 function logoutUser() {
   sessionStorage.setItem("user_login", "false");
   sessionStorage.removeItem("user_info_string");
   sessionStorage.removeItem("register_user_obj_str");
+  sessionStorage.removeItem("userId");
   window.location.href = "../index.html";
 }
 
@@ -96,7 +98,7 @@ function displayProfile() {
     var user_info_array = JSON.parse(sessionStorage.getItem("user_info_string"));
     console.log(user_info_array);
     htmlProfile =
-    '<div class="row"><div class="col-md-5 ml-5 mt-4"><img src="uploads/' +
+    '<div class="row"><div class="col-md-5 ml-5 mt-4"><img src="http://127.0.0.1:8080/uploads/' +
     user_info_array[0].userPhoto +
     '" width="150px" height="150px" class="rounded-circle"><br>\
     <h5 class="mt-2">'+ user_info_array[0].userName +'</h5>\
