@@ -6,7 +6,7 @@ import Scripts from '../components/scripts.astro';
 
 <html lang="en">
 	<Head title="Home"></Head>
-	<body style="background-color: #F8F8F8;">
+	<body style="background-color: #F8F8F8;" onload="fetchUserDetails();">
 		<!-- Include top navigation here -->
 		<Navbar></Navbar>
 		<div class="container-fluid">
@@ -16,13 +16,13 @@ import Scripts from '../components/scripts.astro';
                 </div>
                 <div id="userInfo">
                 </div>
+                <button style="width: 130px" class="form-control bg-warning border-0 ml-5 mt-3"><a href="./editPersonalDetails.html" class="text-white" style="text-decoration: none;"><i class="fas fa-edit"></i> Edit profile</a></button>
             </div>
 		</div>
 	</body>
 	<script>
         loginStatus();
         changeActiveNavItem("Profile");
-        displayProfile();
 	</script>
 	<Scripts></Scripts>
 </html>

@@ -17,7 +17,6 @@ var app = express(); // set variable app to be an instance of express framework.
 app.use(cors());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json()); // json() is a method inbuilt in express to recognize the incoming Request Object from the web client as a JSON Object.
-// In time to come we will need to accept new or edited comments from user
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -29,6 +28,9 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
+app.route('/users').get(userController.getAllUsers); // activate the getAllUsers method if the route is GET(method) /users
+app.route('/users/:id').get(userController.getUserById);
+app.route('/userAndReviews').get(userController.getUsersAndReviews);
 app.post('/register', upload.single('userPhoto'), function(req, res) {
     if(!req.file) {
         console.log("Cannot upload user picture.");
@@ -37,11 +39,15 @@ app.post('/register', upload.single('userPhoto'), function(req, res) {
         userController.addUser(req, res);
     }
 });
-
-app.route('/users').get(userController.getAllUsers); // activate the getAllUsers method if the route is GET(method) /users
-app.route('/userAndReviews').get(userController.getUsersAndReviews);
 app.route('/login').post(userController.login);
-app.route('/users/:id').put(userController.updateUser); // activate the updateUser method if the route is PUT(method) /users/:id
+app.put('/users/:id', upload.single('userPhoto'), function(req, res) {
+    if(!req.file) {
+        console.log("Cannot upload user picture.");
+    }
+    else {
+        userController.updateUser(req, res);
+    }
+});
 app.route('/users/:id').delete(userController.deleteUser); // activate the deleteUser method if the route is DELETE(method) /users/:id
 
 app.route('/restaurants').get(restaurantController.getAllRestaurants); // activate the getAllRestaurants method if the route is GET(method) /restaurants
@@ -51,7 +57,7 @@ app.route('/favourites').get(favouriteController.getAllFavourites); // activate 
 app.route('/favourites').post(favouriteController.addFavourite); // activate the addFavourite method if the route is POST(method) /favourites
 app.route('/favourites/:id').delete(favouriteController.deleteFavourite); // activate the deleteFavourite method if the route is DELETE(method) /favourites/:id
 
-app.route('/reviews').get(reviewController.getAllReviews); // activate the getAllReviews method if the route is GET(method) /reviews
+app.route('/reviews').get(reviewController.getReviews); // activate the getAllReviews method if the route is GET(method) /reviews
 app.route('/reviews').post(reviewController.addReview); // activate the addReview method if the route is POST(method) /reviews
 app.route('/reviews/:id').put(reviewController.updateReview); // activate the updateReview method if the route is PUT(method) /reviews/:id
 app.route('/reviews/:id').delete(reviewController.deleteReview); // activate the deleteReview method if the route is DELETE(method) /reviews/:id

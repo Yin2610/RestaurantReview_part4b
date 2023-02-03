@@ -13,7 +13,8 @@ function registerUser() {
       var register_user_obj_str = JSON.stringify(user);
       sessionStorage.setItem("register_user_obj_str", register_user_obj_str);
       window.location.href = "personalDetails.html";
-    } else {
+    } 
+    else {
       alert("Your password does not meet the requirements. Please try again.");
     }
   } else {
@@ -32,10 +33,15 @@ function passNameAndPw() {
   document.getElementById("passwordDetail").value = password;
 }
 
-function previewImg(event) {
+function previewImg(element, event) {
   var reader = new FileReader();
   reader.onload = function () {
-    var profilePreview = document.getElementById("profilePreview");
+    if(element.getAttribute("id") == "profilePreviewBtn") {
+      var profilePreview = document.getElementById("profilePreview");
+    }
+    else {
+      var profilePreview = document.getElementById("editProfilePreview");
+    }
     profilePreview.src = reader.result;
   };
   reader.readAsDataURL(event.target.files[0]);
@@ -61,11 +67,16 @@ function loginUser() {
       throw "Login failed";
     }
   })
-  .then((data) => {
-    sessionStorage.setItem("user_login", "true");
-    sessionStorage.setItem("user_info_string", JSON.stringify(data));
-    sessionStorage.setItem("login_userId", data[0]._id);
-    window.location.href = "../index.html";
+  .then((token) => {
+    if(token.result != false) {
+      alert("User login successful.");
+      localStorage.setItem("login_userId", token.userId);
+      localStorage.setItem("token", token.result);
+      window.location.href = "../index.html";
+    }
+    else {
+      alert("User login fail.");
+    }
   })
   .catch((error) => {
     console.error("Error:", error);
@@ -73,18 +84,18 @@ function loginUser() {
 }
 
 function logoutUser() {
-  sessionStorage.setItem("user_login", "false");
-  sessionStorage.removeItem("user_info_string");
-  sessionStorage.removeItem("register_user_obj_str");
-  sessionStorage.removeItem("userId");
+  localStorage.removeItem("token");
+  localStorage.removeItem("user_info_string");
+  localStorage.removeItem("login_userId");
   window.location.href = "../index.html";
 }
 
 function loginStatus() {
-  var loginStatus = sessionStorage.getItem("user_login");
-  if (loginStatus == "true") {
+  var loginStatus = localStorage.getItem("token");
+  if (loginStatus != null) {
     document.getElementById("Register").classList.add("d-none");
     document.getElementById("Login").classList.add("d-none");
+    document.getElementById("Profile").classList.add("d-block");
     document.getElementById("Logout").classList.add("d-block");
   } else {
     document.getElementById("Register").classList.add("d-block");
@@ -94,22 +105,51 @@ function loginStatus() {
   }
 }
 
+function fetchUserDetails() {
+  var request = new XMLHttpRequest();
+  request.open("GET", "http://127.0.0.1:8080/users/" + localStorage.getItem("login_userId"), false);
+  //This function will be called when data returns from the web api
+  request.onload = function () {
+    var user_array = JSON.parse(request.responseText);
+    var user_array_string = JSON.stringify(user_array);
+    localStorage.setItem("user_info_string", user_array_string);
+    console.log(localStorage.getItem("user_info_string"));
+    displayProfile();
+  };
+  request.send();
+}
+
 function displayProfile() {
-    var user_info_array = JSON.parse(sessionStorage.getItem("user_info_string"));
+    var user_info_array = JSON.parse(localStorage.getItem("user_info_string"));
     console.log(user_info_array);
     htmlProfile =
     '<div class="row"><div class="col-md-5 ml-5 mt-4"><img src="http://127.0.0.1:8080/uploads/' +
-    user_info_array[0].userPhoto +
+    user_info_array.userPhoto +
     '" width="150px" height="150px" class="rounded-circle"><br>\
-    <h5 class="mt-2">'+ user_info_array[0].userName +'</h5>\
-    <div>'+ user_info_array[0].userGender +'</div> \
-    <div>'+ user_info_array[0].userContact +'</div> \
-    <div>'+ user_info_array[0].userEmail +'</div>';
-    if(user_info_array[0].userBio) {
-        htmlProfile += '<div>'+ user_info_array[0].userBio +'</div>';
+    <h5 class="mt-2">'+ user_info_array.userName +'</h5>\
+    <div>'+ user_info_array.userGender +'</div> \
+    <div>'+ user_info_array.userContact +'</div> \
+    <div>'+ user_info_array.userEmail +'</div>';
+    if(user_info_array.userBio) {
+        htmlProfile += '<div>'+ user_info_array.userBio +'</div>';
     }
     console.log(htmlProfile);
     document
         .getElementById("userInfo")
         .insertAdjacentHTML("beforeend", htmlProfile);
+}
+
+function displayEditPersonalDetails() {
+  var user_info_array = JSON.parse(localStorage.getItem("user_info_string"));
+  document.getElementById("editProfilePreview").src = "http://127.0.0.1:8080/uploads/" + user_info_array.userPhoto;
+  document.getElementById("editUserNameDetail").value = user_info_array.userName;
+  document.getElementById("editEmailDetail").value = user_info_array.userEmail;
+  document.getElementById("editContactDetail").value = user_info_array.userContact;
+  if(user_info_array.userGender == "Male") {
+    document.getElementById("editRdoMale").checked = true;
+  }
+  else {
+    document.getElementById("editRdoFemale").checked = true;
+  }
+  document.getElementById("editUserBio").value = user_info_array.userBio;
 }

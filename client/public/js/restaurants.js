@@ -8,6 +8,7 @@ function getRestaurantData() {
     restaurant_array = JSON.parse(request.responseText);
     restaurant_array_string = JSON.stringify(restaurant_array);
     localStorage.setItem("restaurant_array_string", restaurant_array_string);
+    console.log(localStorage.getItem("restaurant_array_string"));
     displayRestaurants();
   };
 
@@ -93,7 +94,7 @@ function filterRestaurants() {
       categoryValues.push(checkbox.value);
     }
   });
-  var filterURL = "http://localhost:8080/restaurants?";
+  var filterURL = "http://127.0.0.1:8080/restaurants?";
   if(regionValues.length) {
     filterURL += "region=";
     filterURL += regionValues.join(",");
@@ -112,11 +113,11 @@ function filterRestaurants() {
   })
   .then(res => {
     if(res.ok) {
-        return res.json();
+      return res.json();
     }
     else {
-        alert("Cannot filter.");
-        throw "Cannot filter.";
+      alert("Cannot filter.");
+      throw "Cannot filter.";
     }
   })
   .then((data) => {

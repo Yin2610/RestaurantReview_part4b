@@ -2,6 +2,8 @@
 const UsersDB = require('../models/UsersDB');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+var jwt = require("jsonwebtoken");
+var secret = "somesecretkey";
 
 var usersDB = new UsersDB();
 
@@ -30,31 +32,44 @@ function getUsersAndReviews(request, respond) {
 function login(request, respond) {
     var userName = request.body.userName;
     var password = request.body.password;
-    usersDB.login(userName, password, function(error, result){
+    usersDB.login(userName, function(error, result){
         console.log(result);
         if(result.length == 0) {
-            console.log(error);
             respond.status(401).json(error);
         }
         else {
             const hash = result[0].password;
+            console.log("pw", password);
+            console.log("hash", hash);
             var flag = bcrypt.compareSync(password, hash);
             if(flag) {
-                respond.json({result: "valid"});
+                var token = jwt.sign(userName, secret);
+                respond.json({result: token, userId: result[0]._id});
             }
             else {
-                respond.json({result: "invalid"});
+                respond.json({result: false});
             }
-            respond.json(result);
         }
-        console.log(userName, password);
     });
 }
+
+function getUserById(request, respond) {
+    var userId = request.params.id;
+    console.log(userId);
+    usersDB.getUserById(userId, function(error, result) {
+        if(error) {
+            respond.json(error);
+        }
+        else {
+            respond.json(result[0]);
+        }
+    });
+} 
 
 function addUser(request, respond){
     var password = request.body.password;
     password = bcrypt.hashSync(password, 10);
-    var user = new User(null, request.body.userName, request.file.filename, request.body.userEmail, request.body.userContact, request.body.userGender, request.body.userBio, password);
+    var user = new User(null, request.body.userName, request.body.userEmail, request.file.filename, request.body.userContact, request.body.userGender, request.body.userBio, password);
     usersDB.addUser(user, function(error, result){
         if(error){
             respond.json(error);
@@ -66,7 +81,7 @@ function addUser(request, respond){
 }
 
 function updateUser(request, respond){
-    var user = new User(parseInt(request.params.id), request.body.userName, request.body.userPhoto, request.body.userEmail, request.body.userContact, request.body.userGender, request.body.userBio, request.body.password);
+    var user = new User(parseInt(request.params.id), request.body.userName, request.body.userEmail, request.file.filename, request.body.userContact, request.body.userGender, request.body.userBio, null);
     usersDB.updateUser(user, function(error, result){
         if(error){
             respond.json(error);
@@ -89,4 +104,4 @@ function deleteUser(request, respond){
     });
 }
 
-module.exports = {getAllUsers, getUsersAndReviews, login, addUser, updateUser, deleteUser};
+module.exports = {getAllUsers, getUsersAndReviews, login, getUserById, addUser, updateUser, deleteUser};

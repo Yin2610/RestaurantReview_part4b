@@ -2,20 +2,14 @@
 import Navbar from '../components/top-navigation.astro';
 import Head from '../components/head.astro';
 import Scripts from '../components/scripts.astro';
-import '../css/mystyle.css';
 ---
 
 <html lang="en">
 	<Head title="ResetPassword"></Head>
 	<body>
-		<!-- Include top navigation here -->
 		<Navbar></Navbar>
-		<!-- This is the container that holds the initial message, heading, and movies -->
-		<!-- <div w3-include-html="top-navigation.html"></div> -->
 		<div class="container-fluid resetPw-container">
 	
-			<!-- The message will be shown when the page loads and will
-			disappear after the movies are loaded -->
 			<div class="row h-100">
 				<div class="col-md-1"></div>
                 <div class="col-md-10 resetPwBg">
@@ -25,12 +19,6 @@ import '../css/mystyle.css';
 						You should see a 4-digit code in the password reset email we send. </div>
 				</div>
 			</div>
-			<p>
-				<!-- This is the heading showing how many movies are there -->
-			<h3 id="summary"></h3>
-			</p>
-			<!-- Displays thumbnails of the movies here -->
-			<div id="moviesTable" class="row"></div>
 		</div>
 		<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>  
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>

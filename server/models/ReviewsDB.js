@@ -3,8 +3,10 @@
 var db = require('../db-connection');
 
 class ReviewsDB {
-    getAllReviews(callback) {
-        var sql = "SELECT r.*, u.userName, u.userPhoto FROM review as r, user as u WHERE r.userId = u._id ORDER BY r._id";
+    
+    getReviews(sortBySql, callback) {
+        var sql = "SELECT r.*, u.userName, u.userPhoto FROM review as r, user as u WHERE r.userId = u._id " + sortBySql;
+        console.log(sql);
         db.query(sql, callback);
     }
 

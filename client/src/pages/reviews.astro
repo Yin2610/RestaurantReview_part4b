@@ -20,17 +20,17 @@ import EditReviewsModal from '../components/edit-reviews-modal.astro';
             </button>
             <div id="restaurantDetails"></div>
         </div>
-        <div id="emptyReview">No review has been posted about this restaurant yet. Create one now.</div>
-        <div id="reviewBody" class="card mt-4">
+        <div id="reviewBody" class="card my-4">
             <div class="row">
                 <div class="col-md-2">
                     <h5 id="review" style="font-weight: bold; position: absolute; top: 22px; left:40px">Reviews</h5>
                 </div>
                 <div class="col-md-8 text-right mt-3">
                     <label for="sort" style="display: inline;">Sort by: &nbsp; </label>
-                    <select name="sort" style="color: #707070; width: 140px; display: inline" class="form-control">
-                        <option value="Most recent">Most recent</option>
+                    <select name="sortReviews" id="sortReviews" style="color: #707070; width: 150px; display: inline" class="form-control" onchange="fetchReviews()">
+                        <option value="None" selected disabled hidden>Date or rating</option>
                         <option value="Oldest">Oldest</option>
+                        <option value="Most recent">Most recent</option>
                         <option value="Best rating">Best rating</option>
                         <option value="Worst rating">Worst rating</option>
                     </select>
@@ -52,5 +52,12 @@ import EditReviewsModal from '../components/edit-reviews-modal.astro';
     window.addEventListener("load", fetchReviews);
     loginStatus();
     changeActiveNavItem("Explore");
+    function postReview() {
+        if(localStorage.getItem("token") == null) {
+            alert("Please login first to post review.");
+            window.location.href = "./login.html";
+        }
+    }
+    document.getElementById("newReview").addEventListener("click", postReview);
 </script>
 </html>

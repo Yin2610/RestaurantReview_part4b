@@ -14,10 +14,16 @@ class UsersDB {
     db.query(sql, callback);
   }
 
-  login(userName, password, callback) {
+  login(userName, callback) {
     var sql =
-      "SELECT * FROM user WHERE userName = ? AND password = ?";
-    db.query(sql, [userName, password], callback);
+      "SELECT _id, password FROM user WHERE userName = ?";
+    db.query(sql, [userName], callback);
+  }
+
+  getUserById(userId, callback) {
+    var sql = 
+      "SELECT userName, userEmail, userPhoto, userContact, userGender, userBio FROM user WHERE _id = ?";
+    db.query(sql, [userId], callback);
   }
 
   addUser(user, callback) {
@@ -27,8 +33,8 @@ class UsersDB {
       sql,
       [
         user.getUserName(),
-        user.getUserPhoto(),
         user.getUserEmail(),
+        user.getUserPhoto(),
         user.getUserContact(),
         user.getUserGender(),
         user.getUserBio(),
@@ -39,7 +45,7 @@ class UsersDB {
   }
   updateUser(user, callback) {
     var sql =
-      "UPDATE user SET userName = ?, userPhoto = ?, userEmail = ?, userContact = ?, userGender = ?, userBio = ?, password = ? WHERE _id = ?";
+      "UPDATE user SET userName = ?, userPhoto = ?, userEmail = ?, userContact = ?, userGender = ?, userBio = ? WHERE _id = ?";
     return db.query(
       sql,
       [
@@ -49,7 +55,6 @@ class UsersDB {
         user.getUserContact(),
         user.getUserGender(),
         user.getUserBio(),
-        user.getPassword(),
         user.getId(),
       ],
       callback

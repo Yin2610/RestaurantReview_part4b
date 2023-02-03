@@ -1,0 +1,64 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Scripts from '../components/scripts.astro';
+import Head from '../components/head.astro';
+---
+
+<html lang="en">
+<Head title="Edit Personal Details"></Head>
+<body onload="displayEditPersonalDetails()">
+    <Navbar></Navbar>
+    <div class="container-fluid row personalDetailsContainer" style="background-color: #F8F8F8;">
+        <form id="updateForm" class="col-md-11 mx-auto card rounded" enctype="multipart/form-data">
+            <div class="mt-4 ml-4"><a href="profile.html" style="text-decoration: none; color: #707070">&#60; Back to Profile</a></div>
+            <h5 class="text-center mt-3">Personal details</h5>
+            <div class="row mt-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
+                    <img src="images/websiteImages/Group 111.png" alt="Profile picture upload" width="110px" height="110px" id="editProfilePreview" style="border: 1px solid #707070; border-radius: 50%; object-fit: cover;">
+                    <br>
+                    <input type="file" name="userPhoto" id="editProfilePreviewBtn" class="my-3" accept="image/*" required onchange="previewImg(this, event)">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    <input type="text" id="editUserNameDetail" name="userName" placeholder="Username" class="form-control mb-3" required>
+                    <input type="email" id="editEmailDetail" name="userEmail" placeholder="Email address" class="form-control mb-3" required>
+                    <input type="text" id="editContactDetail" name="userContact" placeholder="Mobile number" class="form-control mb-3" required>
+                    <div class="mb-3">
+                        Gender: <input type="radio" name="userGender" id="editRdoMale" value="Male" required checked> Male
+                        <input type="radio" name="userGender" id="editRdoFemale" value="Female" required> Female
+                    </div>
+                    <textarea name="userBio" id="editUserBio" cols="30" rows="3" style="resize: none;" class="form-control mb-3" required></textarea>
+                    <div class="text-center"><input type="submit" class="btn bg-warning rounded text-white px-3 py-1" value="Update"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<Scripts></Scripts>
+<script is:inline>
+    loginStatus();
+    changeActiveNavItem("Profile");
+    var updateForm = document.getElementById("updateForm");
+    updateForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(updateForm);
+        fetch('http://127.0.0.1:8080/users/' + localStorage.getItem("login_userId"), {
+            method: "PUT",
+            body: data,
+        })
+        .then((res) => {
+            if(res.ok) {
+                return res.json();
+            }
+            throw new Error("Something went wrong");
+        })
+        .then((jsonData) => {
+            alert('Personal details update is successful.');
+            window.location.href = "/profile.html";
+        })
+        .catch((err) => { console.log(err) } );
+    });
+</script>
+<script src="/js/users.js" is:inline></script>
+</html>

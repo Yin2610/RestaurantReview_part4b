@@ -1,10 +1,10 @@
-var restaurant_url = "http://localhost:8080/restaurants";
+var restaurant_url = "http://127.0.0.1:8080/restaurants";
 var restaurant_array = []; // This creates an empty restaurant array
 
 var restaurant_count = 0;
 var currentRestaurantIndex = 0;
 var currentReviewIndex = 0;
-var review_url = "http://localhost:8080/reviews";
+var review_url = "http://127.0.0.1:8080/reviews";
 var review_array = []; // This creates an empty review array
 
 var whiteStarImage = 'images/websiteImages/white_star.png';
@@ -17,10 +17,10 @@ var rating = 0;
 var price = 0;
 var tempRating = 0;
 
-var login_url = "http://localhost:8080/login";
+var login_url = "http://127.0.0.1:8080/login";
 
-if (sessionStorage.getItem("login_userId")) {
-    var login_userId = sessionStorage.getItem("login_userId");
+if (localStorage.getItem("login_userId")) {
+    var login_userId = localStorage.getItem("login_userId");
 }
 
 function togglePasswordVisibility(element) {

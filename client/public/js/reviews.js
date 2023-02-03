@@ -1,4 +1,11 @@
 function fetchReviews() {
+  var selectedSorting = document.getElementById("sortReviews").value;
+  var review_url = "http://127.0.0.1:8080/reviews";
+
+  if(selectedSorting != "None") {
+    review_url += "?sortBy=" + selectedSorting;
+  }
+
   var request = new XMLHttpRequest();
 
   request.open("GET", review_url, true);
@@ -8,6 +15,7 @@ function fetchReviews() {
     //get all the comments records into our comments array
     review_array = JSON.parse(request.responseText);
     review_array_string = JSON.stringify(review_array);
+    console.log(review_array_string);
     localStorage.setItem("review_array_string", review_array_string);
     showReviews();
   };
@@ -15,11 +23,11 @@ function fetchReviews() {
 }
 
 function addToFavourites() {
-  if(sessionStorage.getItem("user_login") == "false") {
+  if(localStorage.getItem("token") == null) {
     alert("Please login first to add to favourites.");
     return;
   }
-  var user_info_array = JSON.parse(sessionStorage.getItem("user_info_string"));
+  var user_info_array = JSON.parse(localStorage.getItem("user_info_string"));
   var favourite = {
     userId: user_info_array[0]._id,
     restaurantId: currentRestaurantIndex
@@ -129,7 +137,6 @@ function showReviews() {
       restaurant_array[currentRestaurantIndex]._id
     ) {
       reviewCount += 1;
-      document.getElementById("emptyReview").innerHTML = "";
       star = "";
       var htmlReviews =
         '<div class="container"> \
@@ -140,7 +147,7 @@ function showReviews() {
         review_array[i].userName +
         '</div></div> \
             <div class="col-md-10"><div>' +
-        review_array[i].postedTime +
+        dayjs(review_array[i].postedTime).format("ddd MMM D, YYYY | h:mm A") +
         '</div> \
             <div id="rating' +
         i +
@@ -181,9 +188,9 @@ function showReviews() {
         "</div></div>";
       if(login_userId == review_array[i].userId) {
         htmlReviews +=
-        '<div class="col-md-1"><img src="images/websiteImages/Icon feather-edit.png" item="' +
+        '<div class="col-md-1"><img src="images/websiteImages/Icon feather-edit.png" data-item="' +
         i +
-        '" width="25px" height="25px" data-toggle="modal" data-target="#editReviewModal" data-dismiss="modal" onclick="editReview(this)"/> <img src="images/websiteImages/delete(1).png" item="' +
+        '" width="25px" height="25px" data-toggle="modal" data-target="#editReviewModal" data-dismiss="modal" onclick="editReview(this)"/> <img src="images/websiteImages/delete(1).png" data-item="' +
         i +
         '" width="25px" height="25px" onclick="deleteReview(this)"/></div>';
       }
@@ -195,6 +202,11 @@ function showReviews() {
   }
   document.getElementById("review").textContent =
     "Reviews (" + reviewCount + ")";
+    if(reviewCount == 0) {
+      document
+        .getElementById("reviewContent")
+        .innerHTML = '<div class="ml-4 my-3">No review has been posted about this restaurant yet. Create one now.</div>';
+    }
 }
 
 function newReview() {
@@ -213,7 +225,7 @@ function addReview() {
   review.userId = login_userId; 
   review.title = document.getElementById("title").value; // Value from HTML input text
   review.comment = document.getElementById("comment").value; // Value from HTML input text
-  review.datePosted = null; // Change the datePosted to null instead of taking the timestamp on the client side;
+  review.postedTime = null; // Change the postedTime to null instead of taking the timestamp on the client side;
   review.rating = rating;
   review.price = price;
 
@@ -330,9 +342,7 @@ function changeRatingImages(value, classTarget, setImage) {
 //This function will hide the existing modal and present a modal with the selected comment
 //so that the user can attempt to change the username, rating or movie review
 function editReview(element) {
-  currentReviewIndex = element.getAttribute("item");
-  document.getElementById("editUserId").value =
-    review_array[currentReviewIndex].userId;
+  var currentReviewIndex = element.getAttribute("data-item");
   document.getElementById("editTitle").value =
     review_array[currentReviewIndex].title;
   document.getElementById("editComment").value =
@@ -359,14 +369,14 @@ function displayRating(className, value) {
   changeRatingImages(value, classTarget, setImage);
 }
 
-//This function sends the Comment data to the server for updating
+//This function sends the Review data to the server for updating
 function updateReview() {
   var response = confirm("Are you sure you want to update this comment?");
   if (response == true) {
-    var edit_review_url =
+    var update_review_url =
       review_url + "/" + review_array[currentReviewIndex]._id;
     var updateReview = new XMLHttpRequest(); // new HttpRequest instance to send request to server
-    updateReview.open("PUT", edit_review_url, true); //The HTTP method called 'PUT' is used here as we are updating data
+    updateReview.open("PUT", update_review_url, true); //The HTTP method called 'PUT' is used here as we are updating data
     updateReview.setRequestHeader("Content-Type", "application/json");
     review_array[currentReviewIndex].userId = login_userId;
     review_array[currentReviewIndex].title =
@@ -379,6 +389,7 @@ function updateReview() {
       fetchReviews();
     };
     updateReview.send(JSON.stringify(review_array[currentReviewIndex]));
+    console.log(updateReview);
   }
 }
 
@@ -386,13 +397,41 @@ function updateReview() {
 function deleteReview(element) {
   var response = confirm("Are you sure you want to delete this comment?");
   if (response == true) {
-    var item = element.getAttribute("item"); //get the current item
-    var delete_review_url = review_url + "/" + login_userId;
+    currentReviewIndex = element.getAttribute("data-item"); //get the current item
+    var delete_review_url = review_url + "/" + review_array[currentReviewIndex]._id;
     var eraseReview = new XMLHttpRequest();
     eraseReview.open("DELETE", delete_review_url, true);
     eraseReview.onload = function () {
       fetchReviews();
     };
     eraseReview.send();
+    console.log(eraseReview);
   }
 }
+
+// function sortReviews() {
+//   var selectedSorting = document.getElementById("sortReviews").value;
+//   alert(selectedSorting);
+//   fetch("http://127.0.0.1:8080/reviews?sortBy=" + selectedSorting, {
+//     method: "GET"
+//   })
+//   .then(res => {
+//     if(res.ok) {
+//       return res.json();
+//     }
+//     else {
+//       alert("Cannot sort.");
+//       throw "Cannot sort.";
+//     }
+//   })
+//   .then((data) => {
+//     if(data.length) {
+//       console.log(data);
+//       localStorage.setItem("review_array_string", JSON.stringify(data));
+//       showReviews();
+//     }
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error);
+//   }); 
+// }
