@@ -57,7 +57,7 @@ button {
   background-color: #F8F8F8;
 }
 
-.registration-container, .login-container {
+.restaurantBG-container, .login-container {
   background-image: url("/images/websiteImages/pexels-photo-262047.png");
   margin: 0px;
   background-position: center;

@@ -1,4 +1,5 @@
 const express = require("express"); //using the express web framework
+const nodemailer = require("nodemailer");
 const cors = require("cors");
 const multer = require("multer");
 
@@ -28,6 +29,33 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
+let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "cdev.webapp@gmail.com",
+        pass: "gltjbkwdtuthyjkb"
+    }
+});
+
+app.post("/send", function(req, res) {
+    let mailDetails = {
+        from: "cdev.webapp@gmail.com",
+        to: "cdev.webapp@gmail.com",
+        subject: "subject",
+        text: "Hi",
+    };
+    transporter.sendMail(mailDetails, function(error, data) {
+        if(error) {
+            console.log("Error: ", error);
+        }
+        else {
+            console.log("Email is sent successfully.");
+            res.json({status: "Email sent"});
+        }
+    });
+});
+
+
 app.route('/users').get(userController.getAllUsers); // activate the getAllUsers method if the route is GET(method) /users
 app.route('/users/:id').get(userController.getUserById);
 app.route('/userAndReviews').get(userController.getUsersAndReviews);
@@ -40,6 +68,8 @@ app.post('/register', upload.single('userPhoto'), function(req, res) {
     }
 });
 app.route('/login').post(userController.login);
+app.route('/googleSignIn').post(userController.googleSignIn);
+
 app.put('/users/:id', upload.single('userPhoto'), function(req, res) {
     if(!req.file) {
         console.log("Cannot upload user picture.");

@@ -8,13 +8,13 @@ import Head from '../components/head.astro';
 <Head title="Registration"></Head>
 <body>
     <Navbar></Navbar>
-    <div class="container-fluid registration-container row">
+    <div class="container-fluid restaurantBG-container row">
         <div class="col-md-7"></div>
         <div class="col-md-5 card registration-card mb-3">
             <img src="images/websiteImages/REGISTER.png" alt="REGISTER" width="110px" height="30px" class="mx-auto my-4">
             <input type="text" placeholder="Username" id="registerUsername" class="form-control mb-3" required>
             <div class="input-group">
-                <input type="text" placeholder="Password(8-20 characters, 1 capital, 1 number, 1 special)" id="registerPassword" class="form-control mb-3" required>
+                <input type="text" placeholder="Password(min 8 characters,1 capital,1 number,1 special character)" id="registerPassword" class="form-control mb-3" required>
                 <i class="fa-light fa-eye"></i>
             </div>
             <input type="text" placeholder="Confirm password" id="registerConfirmPassword" class="form-control mb-3" required>

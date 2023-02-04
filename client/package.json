@@ -11,6 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.0.2"
+    "astro": "^2.0.2",
+    "jwt-decode": "^3.1.2"
   }
 }

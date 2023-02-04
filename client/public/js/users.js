@@ -26,11 +26,18 @@ function passNameAndPw() {
   var register_user_obj = JSON.parse(
     sessionStorage.getItem("register_user_obj_str")
   );
+  console.log(sessionStorage.getItem("register_user_obj_str"));
   console.log(register_user_obj);
   var userName = register_user_obj.username;
-  var password = register_user_obj.password;
   document.getElementById("userNameDetail").value = userName;
-  document.getElementById("passwordDetail").value = password;
+  if(register_user_obj.password) {
+    var password = register_user_obj.password;
+    document.getElementById("passwordDetail").value = password;
+  }
+  if(register_user_obj.userEmail) {
+    var email = register_user_obj.userEmail;
+    document.getElementById("emailDetail").value = email;
+  }
 }
 
 function previewImg(element, event) {
@@ -62,7 +69,8 @@ function loginUser() {
   .then((res) => {
     if (res.ok) {
       return res.json();
-    } else {
+    } 
+    else {
       alert("Username or password is not correct.");
       throw "Login failed";
     }

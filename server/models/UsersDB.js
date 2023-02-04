@@ -20,6 +20,12 @@ class UsersDB {
     db.query(sql, [userName], callback);
   }
 
+  googleSignIn(userEmail, callback) {
+    var sql = 
+    "SELECT _id, password FROM user WHERE userEmail = ?";
+    db.query(sql, [userEmail], callback);
+  }
+
   getUserById(userId, callback) {
     var sql = 
       "SELECT userName, userEmail, userPhoto, userContact, userGender, userBio FROM user WHERE _id = ?";

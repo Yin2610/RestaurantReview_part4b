@@ -1,0 +1,39 @@
+---
+import Navbar from '../components/top-navigation.astro';
+import Scripts from '../components/scripts.astro';
+import Head from '../components/head.astro';
+---
+
+<html lang="en">
+<Head title="Registration"></Head>
+<body>
+    <Navbar></Navbar>
+    <div class="container-fluid restaurantBG-container row">
+        
+        <div class="col-md-7"></div>
+        <div class="col-md-5 card registration-card mb-3">
+            <img src="images/websiteImages/REGISTER.png" alt="REGISTER" width="110px" height="30px" class="mx-auto my-4">
+            <input type="text" placeholder="Username" id="registerUsername" class="form-control mb-3" required>
+            <div class="input-group">
+                <input type="text" placeholder="Password(8-20 characters, 1 capital, 1 number, 1 special)" id="registerPassword" class="form-control mb-3" required>
+                <i class="fa-light fa-eye"></i>
+            </div>
+            <input type="text" placeholder="Confirm password" id="registerConfirmPassword" class="form-control mb-3" required>
+            <button class="btn bg-warning text-white mx-auto border-0 py-2 px-3 rounded" onclick="registerUser()">Register</button>
+            <span class="mt-2">__________________________________ <span style="position: relative; top:5px">OR</span> ___________________________________</span>
+            <div class="mt-4 ml-2">Register with: </div>
+            <div class="text-center mt-3">
+                <button class="btn bg-primary text-white border-0 py-1 px-2 rounded"><img src="images/websiteImages/Group 140.png" width="30px" height="30px" class="mr-2"/>Facebook</button>
+                <button class="btn bg-primary text-white ml-3 border-0 py-1 px-2 rounded"><img src="images/websiteImages/Group 139.png" width="30px" height="30px" class="mr-2"/>Google</button>
+            </div>
+            <div class="mt-4 mx-auto">Already have an account? <a href="login.html">Login now.</a></div>
+        </div>
+    </div>
+</body>
+<Scripts></Scripts>
+<script src="/js/users.js" is:inline></script>
+<script is:inline>
+    loginStatus();
+    changeActiveNavItem("Register");
+</script>
+</html>
