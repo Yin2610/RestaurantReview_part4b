@@ -68,7 +68,7 @@ function googleSignIn(request, respond) {
         }
         else {
             var token = jwt.sign(userEmail, secret);
-            respond.json({result: token, userId: result._id});
+            respond.json({result: token, userId: result[0]._id});
         }
     });
 }

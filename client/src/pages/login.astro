@@ -48,7 +48,6 @@ import Scripts from '../components/scripts.astro';
                         user.userEmail = userData.email;
                         user.password = null; 
                         sessionStorage.setItem("register_user_obj_str", JSON.stringify(user));
-                        // console.log(sessionStorage.getItem("register_user_obj_str"));
                         window.location.href = "personalDetails.html";
                     }
                     throw "Cannot sign in with Google.";
@@ -57,7 +56,6 @@ import Scripts from '../components/scripts.astro';
             .then((token) => {
                 localStorage.setItem("login_userId", token.userId);
                 localStorage.setItem("token", token.result);
-                console.log("token", localStorage.getItem("token"));
                 window.location.href = "../index.html";
             })
             .catch((error) => {
@@ -67,11 +65,10 @@ import Scripts from '../components/scripts.astro';
     </script>
 </head>
 <body>
-    
     <Navbar></Navbar>
     <div class="container-fluid login-container row">
         <div class="col-md-8"></div>
-        <div class="col-md-4 card login-card mb-5">
+        <div class="col-md-4 card login-card mb-5 border-dark">
             <img src="images/websiteImages/Login.png" alt="LOGIN" width="80px" height="30px" class="mx-auto my-4">
             <input type="text" placeholder="Username" id="loginUsername" class="form-control mb-3" required>
             <input type="password" placeholder="Password" id="loginPassword" class="form-control mb-2" required>

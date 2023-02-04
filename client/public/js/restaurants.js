@@ -28,7 +28,7 @@ function displayRestaurants() {
   table.innerHTML = "";
   totalRestaurants = restaurant_array.length;
   for (var i = 0; i < totalRestaurants; i++) {
-    var image = restaurant_array[i].image1;
+    var image = restaurant_array[i].restaurantLogo;
     var name = restaurant_array[i].restaurantName;
     var town = restaurant_array[i].town;
     var cuisine = restaurant_array[i].category;

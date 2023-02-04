@@ -115,6 +115,7 @@ function loginStatus() {
 
 function fetchUserDetails() {
   var request = new XMLHttpRequest();
+  console.log(localStorage.getItem("login_userId"));
   request.open("GET", "http://127.0.0.1:8080/users/" + localStorage.getItem("login_userId"), false);
   //This function will be called when data returns from the web api
   request.onload = function () {
@@ -133,7 +134,7 @@ function displayProfile() {
     htmlProfile =
     '<div class="row"><div class="col-md-5 ml-5 mt-4"><img src="http://127.0.0.1:8080/uploads/' +
     user_info_array.userPhoto +
-    '" width="150px" height="150px" class="rounded-circle"><br>\
+    '" width="150px" height="150px" class="rounded-circle border"><br>\
     <h5 class="mt-2">'+ user_info_array.userName +'</h5>\
     <div>'+ user_info_array.userGender +'</div> \
     <div>'+ user_info_array.userContact +'</div> \

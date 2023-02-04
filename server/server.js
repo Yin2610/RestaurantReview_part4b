@@ -41,12 +41,14 @@ app.post("/send", function(req, res) {
     let mailDetails = {
         from: "cdev.webapp@gmail.com",
         to: "cdev.webapp@gmail.com",
-        subject: "subject",
-        text: "Hi",
+        subject: req.body.userEmail + "sent a message from DineSG website.",
+        text: req.body.userMessage,
+        replyTo: req.body.userEmail,
     };
     transporter.sendMail(mailDetails, function(error, data) {
         if(error) {
             console.log("Error: ", error);
+            res.json(error);
         }
         else {
             console.log("Email is sent successfully.");
